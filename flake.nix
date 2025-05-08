@@ -10,16 +10,22 @@
       in {
         packages = rec {
           greybird-with-accent = accent-color:
-            pkgs.stdenvNoCC.mkDerivation {
+            pkgs.stdenvNoCC.mkDerivation rec {
               pname = "greybird";
               version = "3.23.4";
 
               src = ./.;
 
+              theme-name = "greybird-generated";
+
               preConfigure = ''
-                sed -i -e 's\Greybird\greybird-generated\g' \
+                sed -i -e 's\Greybird\${theme-name}\g' \
                        ./light/index.theme
-                sed -i -e 's\Greybird\greybird-generated\g' \
+                mv light/Greybird.emerald light/${theme-name}.emerald
+                mv dark/Greybird.emerald dark/${theme-name}.emerald
+                find . -type f -name 'meson.build' \
+                       | xargs sed -i -e 's\Greybird\${theme-name}\g'
+                sed -i -e 's\Greybird\${theme-name}\g' \
                        ./dark/index.theme
                 sed -i -e 's\#398ee7\#${accent-color}\g' \
                        ./light/gtk-3.0/_colors.scss

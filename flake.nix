@@ -19,14 +19,17 @@
               theme-name = "greybird-generated";
 
               preConfigure = ''
+                # rename Greybird to theme-name to prevent conflicts
                 sed -i -e 's\Greybird\${theme-name}\g' \
                        ./light/index.theme
+                sed -i -e 's\Greybird\${theme-name}\g' \
+                       ./dark/index.theme
                 mv light/Greybird.emerald light/${theme-name}.emerald
                 mv dark/Greybird.emerald dark/${theme-name}.emerald
                 find . -type f -name 'meson.build' \
                        | xargs sed -i -e 's\Greybird\${theme-name}\g'
-                sed -i -e 's\Greybird\${theme-name}\g' \
-                       ./dark/index.theme
+
+                # replace the accent color
                 sed -i -e 's\#398ee7\#${accent-color}\g' \
                        ./light/gtk-3.0/_colors.scss
               '';
@@ -45,6 +48,17 @@
               src = ./.;
 
               preConfigure = with colorScheme.palette; ''
+                # rename Greybird to theme-name to prevent conflicts
+                sed -i -e 's\Greybird\${theme-name}\g' \
+                       ./light/index.theme
+                sed -i -e 's\Greybird\${theme-name}\g' \
+                       ./dark/index.theme
+                mv light/Greybird.emerald light/${theme-name}.emerald
+                mv dark/Greybird.emerald dark/${theme-name}.emerald
+                find . -type f -name 'meson.build' \
+                       | xargs sed -i -e 's\Greybird\${theme-name}\g'
+
+                # replace the colors
                 sed -i -e 's\#fcfcfc\lighten(#${base01}, 3%)\g' \
                        -e 's\#2d2e30\lighten(#${base01}, 3%)\g' \
                        -e 's\white\#${base06}\g' \

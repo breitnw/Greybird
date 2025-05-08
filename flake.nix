@@ -17,16 +17,17 @@
               src = ./.;
 
               preConfigure = ''
+                sed -i -e 's\Greybird\greybird-generated\g' \
+                       ./light/index.theme
+                sed -i -e 's\Greybird\greybird-generated\g' \
+                       ./dark/index.theme
                 sed -i -e 's\#398ee7\#${accent-color}\g' \
                        ./light/gtk-3.0/_colors.scss
               '';
 
               nativeBuildInputs = with pkgs; [ meson ninja pkg-config sassc ];
-
               buildInputs = with pkgs; [ gdk-pixbuf librsvg ];
-
               propagatedUserEnvPkgs = with pkgs; [ gtk-engine-murrine ];
-
               passthru.updateScript = pkgs.gitUpdater { rev-prefix = "v"; };
             };
 
